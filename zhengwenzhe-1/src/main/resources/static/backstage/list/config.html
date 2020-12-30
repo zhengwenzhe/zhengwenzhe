@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="../../font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="../../bootstrap-3.3.7-dist/css/bootstrap.css">
+<title>系统配置</title>
+<style type="text/css">
+	.layui-table-cell span {
+		font-size: 16px;
+		font-weight: 900;
+	}
+	
+	td .layui-table-cell {
+		height: 30px;
+		line-height: 30px;
+	}
+	
+	.layui-upload-img {
+		width: 80px;
+		height: 80px;
+		object-fit: cover;
+	}
+	
+	th {
+		color: black;
+	}
+	
+	th .layui-table-cell {
+		height: 40px;
+		line-height: 40px;
+	}
+	
+	label {
+		font-size: 16px;
+		font-weight: 700;
+	}
+	
+	p input {
+		margin-top: 7px;
+	}
+	
+	.float_right {
+		float: right;
+		position: relative;
+		top: 13px;
+		right: 18px;
+	}
+	
+	.back {
+		background: rgb(247, 247, 247);
+		height: 60px;
+	}
+</style>
+</head>
+<body style="background: rgb(244,246,249)">
+	<div class="panel panel-danger"  id="site_msg"
+		style="width: 540px; margin: 0 auto; margin-top: 30px;margin-left:15px;float:left; border: 1px rgb(229, 229, 229) solid;">
+		<div class="panel-heading"
+			style="border-top: 3px rgb(0, 123, 255) solid; border-bottom: 1px rgb(229, 229, 229) solid; background-color: white; color: black;height:50px;">
+			<h3 class="panel-title" style="font-size: 20px;position: relative;top: 2px;">站点信息</h3>
+		</div>
+		<div class="panel-body layui-form">
+			<div class="form-group">
+                <label>站点名称</label>
+				<input type="text" name="websiteName" required lay-verify="required" placeholder="站点名称" autocomplete="off" class="form-control" id="websiteName">
+			</div>
+			<div class="form-group">
+				<label>站点描述</label>
+				<input type="text" name="websiteDescription" required lay-verify="required" placeholder="站点描述" autocomplete="off" class="form-control" id="websiteDescription">
+			</div>
+			<div class="form-group">
+				<label>站点Logo</label>
+				<input type="text" name="websiteLogo" required lay-verify="required" placeholder="站点Logo" autocomplete="off" class="form-control" id="websiteLogo">
+			</div>
+			<div class="form-group">
+				<label>favicon.ico</label>
+				<input type="text" name="websiteIcon" required lay-verify="required" placeholder="favicon.ico" autocomplete="off" class="form-control" id="websiteIcon">
+			</div>
+			<div class="card-footer back">
+				<button lay-submit lay-filter="formDemo" class="btn btn-danger float_right">确认修改</button>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-danger" id="userinfo"
+		style="width: 540px; margin: 0 auto; margin-top: 30px;margin-left:15px;float:left; border: 1px rgb(229, 229, 229) solid;">
+		<div class="panel-heading"
+			style="border-top: 3px rgb(0, 123, 255) solid; border-bottom: 1px rgb(229, 229, 229) solid; background-color: white; color: black;height:50px;">
+			<h3 class="panel-title" style="font-size: 20px;position: relative;top: 2px;">个人信息</h3>
+		</div>
+		<div class="panel-body layui-form">
+			<div class="form-group">
+				<label class="control-label">个人头像</label>
+				<input type="text" name="yourAvatar" required lay-verify="required" placeholder="个人头像" autocomplete="off" class="form-control" id="yourAvatar">
+			</div>
+			<div class="form-group">
+				<label class="control-label">个人名称</label>
+				<input type="text" name="yourName" required lay-verify="required" placeholder="个人名称" autocomplete="off" class="form-control" id="yourName">
+			</div>
+			<div class="form-group">
+				<label class="control-label">个人邮箱</label>
+				<input type="email" name="yourEmail" required lay-verify="required" placeholder="个人邮箱" autocomplete="off" class="form-control" id="yourEmail">
+			</div>
+			<div class="card-footer back">
+				<button lay-submit lay-filter="formDemo" class="btn btn-danger float_right">确认修改
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="panel panel-danger"  id="bottom_config"
+		style="width: 540px; margin: 0 auto; margin-top: 30px;margin-left:15px;float:left; border: 1px rgb(229, 229, 229) solid;">
+		<div class="panel-heading"
+			style="border-top: 3px rgb(0, 123, 255) solid; border-bottom: 1px rgb(229, 229, 229) solid; background-color: white; color: black;height:50px;">
+			<h3 class="panel-title" style="font-size: 20px;position: relative;top: 2px;">底部设置</h3>
+		</div>
+		<div class="panel-body layui-form">
+			<!-- input states -->
+			<div class="form-group">
+				<label class="control-label">底部About</label>
+				<input type="text" name="footerAbout" required lay-verify="required" placeholder="About" autocomplete="off" class="form-control" id="footerAbout">
+			</div>
+			<div class="form-group">
+				<label class="control-label">底部备案号</label>
+				<input type="text" name="footerICP" required lay-verify="required" placeholder="备案号" autocomplete="off" class="form-control" id="footerICP">
+			</div>
+			<div class="form-group">
+				<label class="control-label">底部Copy Right</label>
+				<input type="text" name="footerCopyRight" required lay-verify="required" placeholder="Copy Right" autocomplete="off" class="form-control" id="footerCopyRight">
+			</div>
+			<div class="form-group">
+				<label class="control-label">底部Powered By</label>
+				<input type="text" name="title" required lay-verify="required" placeholder="Powered By" autocomplete="off" class="form-control" id="footerPoweredBy">
+			</div>
+			<div class="form-group">
+				<label class="control-label">底部Powered By URL</label>
+				<input type="text" name="title" required lay-verify="required" placeholder="Powered By URL" autocomplete="off" class="form-control" id="footerPoweredByURL">
+			</div>
+			<div class="card-footer back">
+				<button lay-submit lay-filter="formDemo" class="btn btn-danger float_right">确认修改</button>
+			</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script type="text/javascript">
+	layui.use([ 'jquery', 'form' ], function() {
+		var $ = layui.jquery, form = layui.form
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		$.ajax({
+			url : '/config/list',
+			success : function(res) {
+				for (var i = 0; i < res.data.length; i++) {
+					$.ajax({
+						url : '/config/findByConfigName',
+						data : {
+							config_name : res.data[i].config_name
+						},
+						success : function(res) {
+							$("#" + res.data.config_name + "").val(res.data.config_value)
+						}
+					})
+				}
+			}
+		})
+		
+		//监听提交
+		form.on('submit(formDemo)', function(data) {
+			
+			var arr = [];
+			for ( var key in data.field) {
+				arr.push({
+					"config_name" : key,
+					"config_value" : data.field[key]
+				});
+			}
+	
+			for (var i = 0; i < arr.length; i++) {
+				$.ajax({
+					url : "/config/edit",
+					data : {
+						config_name : arr[i].config_name,
+						config_value : arr[i].config_value
+					},
+					success : function(res) {
+						if (res.data > 0) {
+							layer.msg('修改成功')
+							setTimeout(function(){
+								parent.location.replace(parent.location.href);
+							},1000)
+						} else {
+							layer.msg('修改失败')
+						}
+					}
+				})
+			}
+			return false;
+		});
+	})
+	</script>
+</body>
+</html>

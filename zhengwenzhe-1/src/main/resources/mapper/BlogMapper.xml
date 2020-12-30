@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fy.dao.BlogMapper">
+
+	<select id="list" resultType="blog">
+		select * from tb_blog
+		<where>
+			is_deleted != 1;
+		</where>
+	</select>
+	
+	<select id="list_status" resultType="blog">
+		select * from tb_blog where blog_status = 1
+	</select>
+	
+	<update id="up" parameterType="int">
+			update tb_blog
+			set
+			is_deleted= 1 
+			<where>
+				blog_id in
+				<foreach collection="array" item="ids" open="(" close=")" separator=",">
+					 #{ids}
+				</foreach>
+			</where>
+	</update>
+	
+	<update id="blog_edit" parameterType="blog">
+		update tb_blog set blog_title=#{blog_title},blog_sub_url=#{blog_sub_url},blog_cover_image=#{blog_cover_image},blog_content=#{blog_content},blog_category_id=#{blog_category_id},blog_category_name=(select category_name from tb_blog_category where category_id=#{blog_category_id}),blog_tags=#{blog_tags},blog_status=#{blog_status},enable_comment=#{enable_comment},update_time=#{update_time} where blog_id=#{blog_id}
+	</update>
+	
+	<update id="edit_blog_views" parameterType="int">
+		update tb_blog set blog_views = #{blog_views}  where blog_id = #{blog_id}
+	</update>
+	
+	<select id="count" resultType="int">
+		select count(*) from tb_blog where is_deleted !=1
+	</select>
+	
+	<select id="dim_list" resultType="blog">
+		select * from tb_blog where blog_title like '%${blog_title}%' or blog_category_name like '%${blog_category_name}%'
+	</select>
+	
+	<select id="findById" resultType="blog">
+		select * from tb_blog where blog_id = #{blog_id}
+	</select>
+	
+	<select id="findAllByDate" resultType="blog">
+		select * from tb_blog  where is_deleted != 1 and blog_status = 1 order by create_time desc
+	</select>
+	
+	<select id="mhcx" resultType="blog">
+		select * from tb_blog where blog_title like '%${blog_title}%' and blog_status = 1
+	</select>
+	
+	<select id="tags" resultType="blog">
+		select * from tb_blog where blog_tags like '%${blog_tags}%' and blog_status = 1
+	</select>
+	
+	<select id="getBlogCountGroup" resultType="blog">
+		select * from tb_blog where blog_status = 1
+	</select>
+	
+	<select id="comment" resultType="blog">
+		select * from tb_blog_comment a,tb_blog b where a.blog_id=b.blog_id and a.blog_id=#{blog_id}
+	</select>
+	
+	<select id="list_enable_comment" resultType="blog">
+		select * from tb_blog where blog_id = #{blog_id} and enable_comment = 0
+	</select>
+	
+	<select id="cx_category_name" resultType="blog">
+		select * from tb_blog where blog_category_name = #{blog_category_name} and blog_status = 1
+	</select>
+	
+	<insert id="add" parameterType="blog">
+		insert into tb_blog(blog_title,blog_sub_url,blog_cover_image,blog_category_id,blog_category_name,blog_content,blog_tags,blog_status,blog_views,enable_comment,is_deleted,create_time,update_time) values(#{blog_title},#{blog_sub_url},#{blog_cover_image},#{blog_category_id},(select category_name from tb_blog_category where category_id=#{blog_category_id}),#{blog_content},#{blog_tags},#{blog_status},#{blog_views},#{enable_comment},#{is_deleted},#{create_time},#{update_time})
+	</insert>
+	
+</mapper>

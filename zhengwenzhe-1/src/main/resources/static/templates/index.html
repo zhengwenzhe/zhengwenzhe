@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>首页</title>
+<link href="css/frontindex.css" rel="stylesheet" />
+<link rel="stylesheet" href="../layui/css/layui.css" media="all">
+<link rel="stylesheet"
+	href="../font-awesome-4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+.footer {
+	padding: 20px;
+	text-align: center;
+	background: #ddd;
+  	line-height: 25px;
+}
+
+.blog_img {
+	width: 400px;
+}
+
+#ul li a:hover {
+	color: DarkGray;
+}
+
+#ul li a {
+	font-size: 16px;
+}
+
+.layui-timeline-title a:hover {
+	color: DarkOrange;
+}
+
+.footer span {
+	margin: 2px;
+}
+h1{
+	margin: 20px 0px;
+}
+</style>
+</head>
+<body>
+	<!-- 头部 -->
+	<div class="head">
+		<div class="div1">personal blog</div>
+		<div class="div3">
+			<ul style="margin-top: 10px;" id="ul">
+				<li style="display: inline;"><a href="index.html">主页</a></li>
+				<li style="display: inline;"><a href="blogroll.html">友链</a></li>
+				<li style="display: inline;"><a href="about.html">关于</a></li>
+				<li style="display: inline;"><a
+					href="https://github.com/ZHENFENG13">GITHUB</a></li>
+			</ul>
+		</div>
+		<div class="div2">我不怕千万人阻挡,只怕自己投降</div>
+	</div>
+
+	<!-- 中间   -->
+	<div class="zj">
+
+		<div class="zj1">
+
+			<fieldset class="layui-elem-field layui-field-title"
+				style="margin-top: 30px;">
+				<legend>生活如此多娇</legend>
+				<ul class="layui-timeline" id="blog_show">
+
+				</ul>
+			</fieldset>
+
+			<div id="demo7"></div>
+		</div>
+
+		<div class="zj2">
+
+			<div class="zj21">
+				<button class="btn" style="border-bottom: 1px black solid;">
+					<h4>搜索文章</h4>
+				</button>
+				<hr
+					style="background-color: rgb(241, 241, 241); height: 1px; border: 0px; margin-top: 0px;" />
+			</div>
+			<div class="zj22">
+				<form>
+					<div class="layui-form-item">
+						<div class="layui-input-inline">
+							<input type="text" name="blog_title" id="blog_title"
+								lay-verify="required" placeholder="请输入" autocomplete="off"
+								class="layui-input" style="width: 300px;">
+							<button type="button"
+								class="layui-btn layui-btn-primary layui-btn-sm btn1"
+								id="search">
+								<i class="layui-icon layui-icon-search"></i>
+							</button>
+						</div>
+					</div>
+				</form>
+			</div>
+
+			<div>
+				<div style="width: 300px;" id="search_blog"></div>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<button class="btn" style="border-bottom: 1px black solid;">
+					<h4>热门标签</h4>
+				</button>
+				<hr
+					style="background-color: rgb(241, 241, 241); height: 1px; border: 0px; margin-top: 0px;" />
+			</div>
+
+			<div>
+				<div style="width: 300px;" id="hotag"></div>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<button class="btn" style="border-bottom: 1px black solid;">
+					<h4>最新发布</h4>
+				</button>
+				<hr
+					style="background-color: rgb(241, 241, 241); height: 1px; border: 0px; margin-top: 0px;" />
+			</div>
+
+			<div>
+				<div style="width: 300px;" id="newtag"></div>
+			</div>
+
+			<div style="margin-top: 20px;">
+				<button class="btn" style="border-bottom: 1px black solid;">
+					<h4>点击最多</h4>
+				</button>
+				<hr
+					style="background-color: rgb(241, 241, 241); height: 1px; border: 0px; margin-top: 0px;" />
+			</div>
+
+			<div class="divw" id="clickdiv"></div>
+
+		</div>
+
+	</div>
+	<div class="footer" style="position: relative;">
+		© <span id="footerAbout"></span> <span id="footerCopyRight"></span><br />
+		<span id="footerICP"></span> <span>♥ Theme Amaze by spiritree &
+			Jiahao.Zhang</span>
+	</div>
+	<script src="../layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script>
+	var obj=[];
+	layui.use([ 'jquery', 'laypage', 'layer' ], function() {
+			var laypage = layui.laypage, layer = layui.layer;
+			var $=layui.jquery;
+			
+			$.ajax({
+				url : '/config/list',
+				success : function(res) {
+					for (var i = 0; i < res.data.length; i++) {
+						$.ajax({
+							url : '/config/findByConfigName',
+							data : {
+								config_name : res.data[i].config_name
+							},
+							success : function(res) {
+								$('#' + res.data.config_name + '').html(
+										res.data.config_value)
+							}
+						})
+					}
+				}
+			})
+			
+			$.ajax({
+				url:"/blog_tag/findAll",
+				success:function(res){
+					for(var i=0;i<res.data.length;i++){
+						$("#hotag").append("<div class='layui-btn layui-btn-sm' style='color: black; background-color: white; display: inline-block; border: 1px rgb(241, 241, 241) solid;margin: 5px;'><a href='javascript:void(0);' onclick='a(this)'>"+res.data[i].tag_name+"</a></div>")
+					}
+				}
+			})
+			$.ajax({
+				url:'/blog/findAllByDate',
+				success:function(res){
+					for(var i=0;i<10;i++){
+						$("#newtag").append("<div style='margin:20px 0px 20px 0px'><a href=details.html?blog_id="+res.data[i].blog_id+" style='text-decoration:none;color:black'>"+res.data[i].blog_title+"</a></div>")
+					}
+				}
+			})
+			$.ajax({
+				url:'/blog/getBlogCountGroup',
+				success:function(res){
+					for(var i=0;i<5;i++){
+						$("#clickdiv").append("<div style='margin:20px 0px 20px 0px'><a href=details.html?blog_id="+res.data[i].blog_id+" style='text-decoration:none;color:black'>"+res.data[i].blog_title+"</a></div>")
+					}
+				}
+			})
+			
+			$.ajax({
+				url:"/blog/list_status",
+				data:{
+					page:"1",
+					limit:"4"
+				},
+				success:function(res1){
+					var config_names=["yourName","yourAvatar"]
+					//完整功能
+					laypage.render({
+						elem : 'demo7',
+						count : res1.total,
+						limit : 4,
+						layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+						theme : '#1E9FFF',
+						jump : function(obj) {
+							$.ajax({
+								url:"/config/findByConfigNames",
+								data:{
+									config_names:config_names
+								},
+								async:false,
+								success:function(req){
+									obj[0]=req.data[0].config_value;
+									obj[1]=req.data[1].config_value;
+								}
+							})
+							$.ajax({
+								url:"/blog/list_status",
+								data:{
+									page:obj.curr,
+									limit:obj.limit
+								},
+								success:function(res){
+									var str="";
+									for(var i=0;i<res.list.length;i++){
+										str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+										str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+										str+="<li class=layui-timeline-item>";
+										str+="<i class=layui-icon layui-timeline-axis></i>";
+										str+="<div class=layui-timeline-content layui-text>";
+										str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+										str+="</div>";
+										str+="</li>";
+									}
+									$("#blog_show").html(str);
+								}
+							});
+						}
+					});
+				}
+			});
+			
+			$("#search").on('click',function(){
+				var blog_title=$("#blog_title").val();
+			
+				if(blog_title==""){
+					$("#search_blog").html("");
+					layer.msg("请输入内容！！！");
+					$.ajax({
+						url:"/blog/list_status",
+						data:{
+							page:"1",
+							limit:"4"
+						},
+						success:function(res1){
+							var config_names=["yourName","yourAvatar"]
+							//完整功能
+							laypage.render({
+								elem : 'demo7',
+								count : res1.total,
+								limit : 4,
+								layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+								theme : '#1E9FFF',
+								jump : function(obj) {
+									$.ajax({
+										url:"/config/findByConfigNames",
+										data:{
+											config_names:config_names
+										},
+										async:false,
+										success:function(req){
+											obj[0]=req.data[0].config_value;
+											obj[1]=req.data[1].config_value;
+										}
+									})
+									$.ajax({
+										url:"/blog/list_status",
+										data:{
+											page:obj.curr,
+											limit:obj.limit
+										},
+										success:function(res){
+											var str="";
+											for(var i=0;i<res.list.length;i++){
+												str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+												str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+												str+="<li class=layui-timeline-item>";
+												str+="<i class=layui-icon layui-timeline-axis></i>";
+												str+="<div class=layui-timeline-content layui-text>";
+												str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+												str+="</div>";
+												str+="</li>";
+											}
+											$("#blog_show").html(str);
+										}
+									});
+								}
+							});
+						}
+					});
+					return;
+				}
+				
+				$.ajax({
+					url:"/blog/mhcx",
+					data:{
+						page:"1",
+						limit:"4",
+						blog_title:blog_title
+					},
+					success:function(res1){
+						if(res1.list.length == 0){
+							$("#search_blog").html("");
+							layer.msg("没有关于该关键字的博客！！！");
+							$.ajax({
+								url:"/blog/list_status",
+								data:{
+									page:"1",
+									limit:"4"
+								},
+								success:function(res1){
+									var config_names=["yourName","yourAvatar"]
+									//完整功能
+									laypage.render({
+										elem : 'demo7',
+										count : res1.total,
+										limit : 4,
+										layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+										theme : '#1E9FFF',
+										jump : function(obj) {
+											$.ajax({
+												url:"/config/findByConfigNames",
+												data:{
+													config_names:config_names
+												},
+												async:false,
+												success:function(req){
+													obj[0]=req.data[0].config_value;
+													obj[1]=req.data[1].config_value;
+												}
+											})
+											$.ajax({
+												url:"/blog/list_status",
+												data:{
+													page:obj.curr,
+													limit:obj.limit
+												},
+												success:function(res){
+													var str="";
+													for(var i=0;i<res.list.length;i++){
+														str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+														str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+														str+="<li class=layui-timeline-item>";
+														str+="<i class=layui-icon layui-timeline-axis></i>";
+														str+="<div class=layui-timeline-content layui-text>";
+														str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+														str+="</div>";
+														str+="</li>";
+													}
+													$("#blog_show").html(str);
+												}
+											});
+										}
+									});
+								}
+							});
+							return;
+						}
+						var config_names=["yourName","yourAvatar"];
+						//完整功能
+						laypage.render({
+							elem : 'demo7',
+							count : res1.total,
+							limit : res1.list.length,
+							layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+							theme : '#1E9FFF',
+							jump : function(obj) {
+								$.ajax({
+									url:"/config/findByConfigNames",
+									data:{
+										config_names:config_names
+									},
+									async:false,
+									success:function(req){
+										obj[0]=req.data[0].config_value;
+										obj[1]=req.data[1].config_value;
+									}
+								})
+								$.ajax({
+									url:"/blog/mhcx",
+									data:{
+										page:obj.curr,
+										limit:obj.limit,
+										blog_title:blog_title
+									},
+									success:function(res){
+										var str="";
+										for(var i=0;i<res.list.length;i++){
+											str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+											str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+											str+="<li class=layui-timeline-item>";
+											str+="<i class=layui-icon layui-timeline-axis></i>";
+											str+="<div class=layui-timeline-content layui-text>";
+											str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+											str+="</div>";
+											str+="</li>";
+										}
+										$("#blog_show").html(str);
+									}
+								});
+							}
+							});
+						}
+					
+				})
+			})
+	window.a = function (objj){
+			$.ajax({
+				url:"/blog/tags",
+				data:{
+					page:"1",
+					limit:"4",
+					blog_tags : objj.innerHTML
+				},
+				success:function(res1){
+					var config_names=["yourName","yourAvatar"];
+					if(res1.list.length == 0){
+						layer.msg("没有关于该标签的博客！！！");
+						return;
+					}else{
+					//完整功能
+					laypage.render({
+						elem : 'demo7',
+						count : res1.total,
+						limit : res1.list.length,
+						layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+						theme : '#1E9FFF',
+						jump : function(obj) {
+							$.ajax({
+								url:"/config/findByConfigNames",
+								data:{
+									config_names:config_names
+								},
+								async:false,
+								success:function(req){
+									obj[0]=req.data[0].config_value;
+									obj[1]=req.data[1].config_value;
+								}
+							})
+							$.ajax({
+								url:"/blog/tags",
+								data:{
+									page:obj.curr,
+									limit:obj.limit,
+									blog_tags : objj.innerHTML
+								},
+								success:function(res){
+									var str="";
+									for(var i=0;i<res.list.length;i++){
+										str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+										str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+										str+="<li class=layui-timeline-item>";
+										str+="<i class=layui-icon layui-timeline-axis></i>";
+										str+="<div class=layui-timeline-content layui-text>";
+										str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+										str+="</div>";
+										str+="</li>";
+									}
+									$("#blog_show").html(str);
+								}
+							});
+						}
+						});
+					}
+				}
+			})
+		}
+		window.aaaa = function (objj){
+			$.ajax({
+				url : '/blog/cx_category_name',
+				data : {
+					page:"1",
+					limit:"4",
+					blog_category_name : objj.innerHTML
+				},
+				success:function(res1){
+					var config_names=["yourName","yourAvatar"];
+					if(res1.list.length == 0){
+						layer.msg("没有关于该标签的博客！！！");
+						return;
+					}else{
+					//完整功能
+					laypage.render({
+						elem : 'demo7',
+						count : res1.total,
+						limit : res1.list.length,
+						layout : [ 'count', 'prev', 'page', 'next',  'refresh' ],
+						theme : '#1E9FFF',
+						jump : function(obj) {
+							$.ajax({
+								url:"/config/findByConfigNames",
+								data:{
+									config_names:config_names
+								},
+								async:false,
+								success:function(req){
+									obj[0]=req.data[0].config_value;
+									obj[1]=req.data[1].config_value;
+								}
+							})
+							$.ajax({
+								url:"/blog/cx_category_name",
+								data:{
+									page:obj.curr,
+									limit:obj.limit,
+									blog_category_name : objj.innerHTML
+								},
+								success:function(res){
+									var str="";
+									for(var i=0;i<res.list.length;i++){
+										str+="<div><img style=width:60px;height:60px;border-radius:60px; src="+obj[0]+"><span style=\"position:relative;top:5px;\">"+obj[1]+"&nbsp;&nbsp;&nbsp;in&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='aaaa(this)' >"+res.list[i].blog_category_name+"</a></span><span style=\"position:absolute;left:400px;margin-top:25px;\">"+res.list[i].create_time+"</span></div>";
+										str+="<h1 class=layui-timeline-title style=\"height:40px;line-height:40px\"><a style=\"margin-left:20px;\" href=details.html?blog_id="+res.list[i].blog_id+">"+res.list[i].blog_title+"</a></h1>";
+										str+="<li class=layui-timeline-item>";
+										str+="<i class=layui-icon layui-timeline-axis></i>";
+										str+="<div class=layui-timeline-content layui-text>";
+										str+="<img src="+res.list[i].blog_cover_image+" class=blog_img>";
+										str+="</div>";
+										str+="</li>";
+									}
+									$("#blog_show").html(str);
+								}
+							});
+						}
+						});
+					}
+				}
+			})
+		}
+	});
+	</script>
+</body>
+</html>

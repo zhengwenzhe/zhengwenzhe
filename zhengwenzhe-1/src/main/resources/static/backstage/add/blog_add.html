@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>完善信息</title>
+<link rel="stylesheet" href="../../layui/css/layui.css" media="all">
+<style type="text/css">
+.layui-upload-img {
+    width: 80px;
+    height: 80px;
+    object-fit:cover;
+}
+.font{
+	font-size: 20px;
+	font-weight: 700;
+	padding: 0px 15px;
+}
+.layui-form-label{
+	height: 80px;
+	line-height: 80px;
+}
+.bbt {
+	width: 60px;
+}
+.bdiv{
+	padding-top: 20px;
+	padding-left: 170px;
+}
+</style>
+</head>
+<body>
+	<div class="layui-form-item" style="padding-top: 20px;">
+		<div style="padding-left: 30px;">
+			<label class="layui-form-label font" style="width:110px;">博客封面图</label>
+			<div class="layui-input-block">
+				<div class="layui-upload">
+					<div class="layui-upload-list">
+						<img class="layui-upload-img" id="demo1">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-form">
+			<label class="layui-form-label font" style="height: 50px;line-height: 50px;">状态</label>
+			<div class="layui-input-block" style="height: 50px;line-height: 40px;">
+				<input type="radio" name="blog_status" value="0" title="草稿" checked>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="radio" name="blog_status" value="1" title="发布">
+			</div>
+		</div>
+		<div class="layui-form">
+			<label class="layui-form-label font" style="height: 50px;line-height: 50px;">评论</label>
+			<div class="layui-input-block" style="height: 50px;line-height: 40px;">
+				<input type="radio" name="enable_comment" value="0" title="允许评论" checked>
+				<input type="radio" name="enable_comment" value="1" title="不允许评论">
+			</div>
+		</div>
+		<div class="bdiv">
+			<button class="layui-btn layui-btn-sm bbt" id="ok" style="background-color: rgb(40, 167, 69); border-radius: 3px;">确定</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript"
+	src="../../jquery-3.5.1/jquery-3.5.1.min.js"></script>
+<script type="text/javascript">
+layui.use(['form','jquery','upload'],function(){
+	
+	var form=layui.form;
+	var $=layui.jquery;
+	var upload=layui.upload;
+	
+		function RequestParameter() {
+
+			var url = window.location.search;
+
+			var theRequest = new Object();
+
+			if (url.indexOf("?" != -1)) {
+				var str = url.substr(1);
+				var strs = str.split("&");
+				for (var i = 0; i < strs.length; i++) {
+					theRequest[strs[i].split("=")[0]] = (strs[i]
+							.split("=")[1]);
+				}
+			}
+			return theRequest;
+
+		}
+		//普通图片上传
+		var uploadInst = upload.render({
+		    elem: '#demo1',
+		    url: '/myfile/upload', //改成您自己的上传接口
+		    before: function(obj){
+		      //预读本地文件示例，不支持ie8
+		      obj.preview(function(index, file, result){
+		        $('#demo1').attr('src', result); //图片链接（base64）
+		      });
+		    },
+		    done: function(res){
+		    	$("#ok").on('click',function(){
+					var blog_title = decodeURI(RequestParameter()["blog_title"]);
+					var blog_sub_url = decodeURI(RequestParameter()["blog_sub_url"]);
+					var blog_category_id = decodeURI(RequestParameter()["blog_category_id"]);
+					var blog_content = decodeURI(RequestParameter()["blog_content"]);
+					var blog_tags = decodeURI(RequestParameter()["blog_tags"]);
+					var blog_status = $('input[name="blog_status"]:checked').val();
+					var enable_comment = $('input[name="enable_comment"]:checked').val();
+					
+					$.ajax({
+						url : "/blog/add",
+						data :　{
+							blog_title : blog_title,
+							blog_sub_url : blog_sub_url,
+							blog_cover_image : res.data,
+							blog_category_id : blog_category_id,
+							blog_content : blog_content,
+							blog_tags : blog_tags,
+							blog_status : blog_status,
+							enable_comment : enable_comment
+						},
+						success:function(res){
+							if(res.data == 1){
+								layer.msg("发布博客成功");
+					    		window.setInterval(function(){
+									window.parent.layer.closeAll();
+					    		},2000)
+							}else{
+								layer.msg("发布博客失败！！！");
+							}
+						}
+					})
+					
+				})
+		    }
+		  });
+		
+		})
+</script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>欢迎来到张三的博客</title>
+<link rel="stylesheet" href="css/two.css" />
+<link href="css/frontindex.css" rel="stylesheet" />
+<style type="text/css">
+#ul li a:hover {
+	color: DarkGray;
+}
+
+.footer span {
+	margin: 2px;
+}
+</style>
+</head>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script>
+	layui.use([ 'jquery', 'laypage', 'layer' ], function() {
+		var laypage = layui.laypage, layer = layui.layer;
+		var $ = layui.jquery;
+		$.ajax({
+			url : '/link/list',
+			success : function(req) {
+				for (var i = 0; i < req.list.length; i++) {
+					if (req.list[i].is_deleted == 0) {
+						if (req.list[i].link_type == 0) {
+							$("#friendlink").append(
+									"<li><a href="+req.list[i].link_url+">"
+											+ req.list[i].link_name + "</a> - "
+											+ req.list[i].link_description
+											+ "</li>")
+						} else if (req.list[i].link_type == 1) {
+							console.log(req.list[i].link_url)
+							$("#tjwebsites").append(
+									"<li><a href="+req.list[i].link_url+">"
+											+ req.list[i].link_name + "</a> - "
+											+ req.list[i].link_description
+											+ "</li>")
+						} else if (req.list[i].link_type == 2) {
+							$("#personal").append(
+									"<li><a href="+req.list[i].link_url+">"
+											+ req.list[i].link_name + "</a> - "
+											+ req.list[i].link_description
+											+ "</li>")
+						}
+					}
+				}
+			}
+		})
+	})
+</script>
+<body>
+	<div>
+		<div class="head">
+			<div class="div1">personal blog</div>
+			<div class="div3">
+				<ul style="margin-top: 10px;" id="ul">
+					<li style="display: inline;"><a href="index.html">主页</a></li>
+					<li style="display: inline;"><a href="blogroll.html">友链</a></li>
+					<li style="display: inline;"><a href="about.html">关于</a></li>
+					<li style="display: inline;"><a
+						href="https://github.com/ZHENFENG13">GITHUB</a></li>
+				</ul>
+			</div>
+			<div class="div2">我不怕千万人阻挡,只怕自己投降</div>
+
+		</div>
+
+
+		<div class="row">
+			<div class="column side">
+				<!--<h2>左侧栏</h2>
+    <p>菜鸟教程 - 学的不仅是技术，更是梦想！</p>-->
+			</div>
+
+			<div class="column middle">
+				<h2>友链</h2>
+				<ul id="friendlink">
+				</ul>
+				<h2>推荐网站</h2>
+				<ul id="tjwebsites">
+				</ul>
+
+				<h2>个人网站</h2>
+				<ul id="personal">
+				</ul>
+
+				<h2>链接须知</h2>
+				<p>欢迎互换友链^_^不过请确定贵站可以正常运营.</p>
+				<p>我的邮箱是1349716188@qq.com 格式要求如下:</p>
+				<ul>
+					<li>网站名称: blog</li>
+					<li>网站链接:http://blog.site</li>
+					<li>网站描述:张三的个人博客</li>
+				</ul>
+
+				<p>请保证自己的链接长期有效,不然可能会被清理.</p>
+
+			</div>
+
+			<div class="column side">
+				<!--<h2>右侧栏</h2>
+    <p>菜鸟教程 - 学的不仅是技术，更是梦想！</p>-->
+			</div>
+		</div>
+
+		<div class="footer">
+			© <span id="footerAbout"></span> <span id="footerCopyRight"></span><br />
+			<span id="footerICP"></span> <span>♥ Theme Amaze by spiritree
+				& Jiahao.Zhang</span>
+		</div>
+	</div>
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+			url : '/config/list',
+			success : function(res) {
+				for (var i = 0; i < res.data.length; i++) {
+					$.ajax({
+						url : '/config/findByConfigName',
+						data : {
+							config_name : res.data[i].config_name
+						},
+						success : function(res) {
+							$('#' + res.data.config_name + '').html(
+									res.data.config_value)
+						}
+					})
+				}
+			}
+		})
+	</script>
+</body>
+</html>

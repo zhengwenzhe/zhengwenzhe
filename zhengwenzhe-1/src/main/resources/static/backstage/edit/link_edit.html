@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<title>修改友情链接</title>
+<style type="text/css">
+.title {
+	width: 400px;
+	height: 50px;
+	margin: 0 auto;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.title p {
+	font-size: 20px;
+	color: gray;
+	line-height: 50px;
+}
+
+.rule {
+	width: 420px;
+	margin: 0 auto;
+}
+.layui-form-item{
+	width:400px;
+	margin:0 auto;
+	margin-bottom: 30px;
+	
+}
+</style>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script src="../../js/jquery.min.js"></script>
+<script>
+layui.use([ "jquery", "form","layer"], function() {
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	
+	var $ = layui.jquery;
+	var form = layui.form;
+	var layer=layui.layer;
+	var obj=location.href;
+	var link_id=obj.substring(obj.indexOf('=')+1,obj.length)
+	
+	$.ajax({
+		url:"/link/findById",
+		data:{
+				id:link_id
+			},
+		success:function(res){
+			$("#link_type").find("option[value="+res.link_type+"]").attr("selected",true);
+			$("#link_id").val(res.link_id)
+			$("#link_description").val(res.link_description)
+		}
+	})
+
+	
+	$("#submit").on('click',function(){
+		
+		var link_id=$("#link_id").val();
+		var link_type=$("#link_type").val();
+		var link_description=$("#link_description").val();
+		if(link_description == "" || link_description==null){
+			layer.msg("网站描述不能为空")
+			return;
+		}		
+		$.ajax({
+			url:"/link/update",
+			data:{
+				link_type:link_type,
+				link_description:link_description,
+				link_id:link_id
+			},
+			success:function(res){
+				if(res>0){
+					layer.alert('编辑成功',function(){
+						 parent.layer.close();
+						 parent.location.href=parent.location;
+					})
+				}else{
+					layer.alert('编辑失败',function(){
+						 parent.layer.close(index);
+					})
+				}
+			}
+		})
+	})
+})
+</script>
+</head>
+<body>
+	<div class="title">
+		<p>编辑友情链接</p>
+	</div>
+	<div class="rule">
+		<hr/>
+	</div>
+	 <div class="layui-layout-admin">
+	 	<input type="hidden" id="link_id">
+		<div class=" layui-main" style="margin: 20px 30px 0px 0px;">
+			<form class="layui-form" lay-filter="example">
+				<div class="layui-form-item" style="">
+					<label class="layui-form-label">链接类型</label>
+					<div class="layui-input-block">
+						<select id="link_type" name="link_type">
+							<option value="0" id="a">友情链接</option>
+							<option value="1" id="b">推荐链接</option>
+							<option value="2" id="c">个人网站</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item layui-form-text">
+				    <label class="layui-form-label">网站描述</label>
+				    <div class="layui-input-block">
+			      		<textarea name="link_description" placeholder="网站描述" class="layui-textarea" id="link_description"></textarea>
+			    	</div>
+			    </div>
+				<div class="layui-form-item" style="width: 400px; margin: 0 auto; margin-top: 30px;">
+					<div class="layui-input-block" style="text-align: center;position: relative;top: 20px;left: -40px;">
+						<button type="button" class="layui-btn" id="submit">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

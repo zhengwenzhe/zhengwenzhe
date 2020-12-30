@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fy.dao.Blog_categoryMapper">
+
+	<select id="list"  resultType="blog_category">
+		select * from tb_blog_category
+		<where>
+			is_deleted != 1;
+		</where>
+	</select>
+	
+	<insert id="insert" parameterType="blog_category">
+	   insert into tb_blog_category(category_name,category_icon) values(#{category_name},#{category_icon})
+	</insert>
+	
+	<select id="findAll"  resultType="blog_category">
+		select * from tb_blog_category;
+	</select>
+	
+	<select id="findById" parameterType="int" resultType="blog_category">
+		select * from tb_blog_category where category_id =#{category_id}
+	</select>
+	
+	<update id="up" parameterType="int">
+			update tb_blog_category
+			set
+			is_deleted= 1 
+			<where>
+			category_id in
+				<foreach collection="array" item="ids" open="(" close=")" separator=",">
+					 #{ids}
+				</foreach>
+			</where>
+	</update>
+	
+	<update id="update" parameterType="blog_category">
+		update tb_blog_category set category_name=#{category_name},category_icon=#{category_icon} where category_id=#{category_id}
+	</update>
+	
+	<select id="count" resultType="int">
+		select count(*) from tb_blog_category where is_deleted !=1
+	</select>
+	
+</mapper>

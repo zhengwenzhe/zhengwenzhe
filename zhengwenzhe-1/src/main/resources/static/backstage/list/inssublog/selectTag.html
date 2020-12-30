@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+	<link rel="stylesheet" href="../../../font-awesome-4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../../../layui/css/layui.css">
+<title>标签云</title>
+<style type="text/css">
+	.container{
+		width: 500px;									
+		margin: 0 auto;
+		overflow:hidden;
+	}
+	.container div{
+		float:left;
+		border: solid lightblue 1px;
+		border-radius: 15px;
+		margin: 10px;
+		height: 30px;
+	}
+	.container div p{
+		display: inline;
+		color: gray;
+		line-height: 30px;
+		margin-left: 10px;
+		margin-right: 10px;
+	}
+	.co{
+		background:lightblue;
+	}
+	.submit_button{
+		width: 500px;								
+		margin: 0 auto;
+		margin-top: 20px;
+		text-align: right;
+	}
+</style>
+</head>
+<body>
+	<div class="container"></div>	
+	<div class="submit_button">
+		<button type="button" class="layui-btn" id="transmit" >保存</button>
+	</div>
+	<script src="../../../layui/layui.js"></script>
+	<script src="../../../js/jquery.min.js"></script>
+	<script>
+		//注意：parent 是 JS 自带的全局对象，可用于操作父页面
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		
+		var str=new Array();
+		
+		var i=0;
+		function pitch(){
+			//$(".ddiv").eq(n).show();
+			if($(this).hasClass('co')){
+				$(this).removeClass("co")
+			}else{
+				$(this).addClass("co")
+			}
+			if($(this).hasClass('co')){
+				i++;
+				str[i-1]=$(this).html();
+			}
+			//this.$("div").text();
+			//if(parent.$("#blog_tags").has)
+			console.log($(this).html())
+		}
+		layui.use(['form','jquery'],function(){
+			var form=layui.form,$=layui.jquery;
+			
+			$.ajax({
+				url:"/blog_tag/findAll",
+				success:function(res){
+					var obj=res.data;
+					console.log(obj)
+					for(var i=0;i<obj.length;i++){
+						$(".container").append("<div class=ddiv ><p>"+obj[i].tag_name+"</p></div>")
+					}
+					$(".ddiv").on("click",pitch);
+				}
+			})
+			//<b class=fa fa-times aria-hidden=true></b>
+			$('#transmit').on('click', function(){
+				for(var i=0;i<str.length;i++){
+				    parent.$('#blog_tags b').remove("");
+				    parent.$('#blog_tags').append("<div class=tags style='position:relative;top:-5.5px'>"+str[i]+"<button class=close_tags onclick=closeTages()>×<button></div>");
+				    parent.layer.tips('Look here', '#blog_tags', {time: 5000});
+				    parent.layer.close(index);
+				}
+			});
+		})
+	</script>
+</body>
+</html>

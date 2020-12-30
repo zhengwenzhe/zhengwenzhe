@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>博客详细内容</title>
+<link href="css/frontindex.css" rel="stylesheet" />
+<link rel="stylesheet" href="css/about.css" />
+<link rel="stylesheet" href="../layui/css/layui.css">
+<style type="text/css">
+.divv3 {
+	display: inline-block;
+	margin-left: 20px;
+}
+
+.div_tags {
+	border: 1px solid white;
+	padding: 8px;
+}
+
+.div_xx {
+	font-style: italic;
+}
+
+.div_zz {
+	font-size: 12px;
+	color: DarkGray;
+	text-align: center;
+}
+
+#ul li a:hover {
+	color: DarkGray;
+}
+
+.footer span {
+	margin: 2px;
+	font-size: 16px;
+}
+
+h2 {
+	margin-top: 25px;
+}
+
+.span1 {
+	font-size: 14px;
+	position: relative;
+	left: 800px;
+	top: -50px;
+}
+
+.span2 {
+	line-height: 50px;
+	position: relative;
+	top: -90px;
+	width: 100%;
+	text-align: center;
+}
+
+.span3 {
+	display: block;
+	position: relative;
+	text-align: right;
+	margin-right: 40px;
+	top: -50px;
+}
+</style>
+</head>
+<body>
+	<!-- 头部 -->
+	<div class="head" style="height: 400px;">
+		<div class="div1">personal blog</div>
+		<div class="div3">
+			<ul style="margin-top: 10px;" id="ul">
+				<li style="display: inline;"><a href="index.html">主页</a></li>
+				<li style="display: inline;"><a href="blogroll.html">友链</a></li>
+				<li style="display: inline;"><a href="about.html">关于</a></li>
+				<li style="display: inline;"><a
+					href="https://github.com/ZHENFENG13">GITHUB</a></li>
+			</ul>
+		</div>
+		<div id="blog_title"
+			style="position: absolute; top: 120px; left: 420px; font-size: 40px; font-weight: 700;"></div>
+		<div
+			style="position: absolute; top: 210px; left: 420px; font-size: 20px;">
+			<div class="divv3 div_xx" style="margin-left: 0px;" id="create_time"></div>
+			<div class="divv3 div_xx" id="comment"></div>
+			<div class="divv3 div_xx" id="blog_views"></div>
+		</div>
+		<div id="tags"
+			style="position: absolute; top: 250px; left: 402px; font-size: 20px;"></div>
+	</div>
+	<div
+		style='position: absolute; top: 400px; left: 400px; width: 1200px;'>
+		<div id="blog_show" style="overflow: inherit;"></div>
+		<div class='div_zz' style="margin-top: 20px;">
+			本站文章除注明转载/出处外，皆为作者原创，欢迎转载，但未经作者同意必须保留此段声明，且在文章页面明显位置给出原文链接，否则保留追究法律责任的权利。
+		</div>
+		<hr
+			style='width: 1100px; border: none; height: 1px; background-color: WhiteSmoke; position: relative; left: 50px; top: 20px;' />
+		<div id="bottomA" style="position: relative; top: 20px;"></div>
+		<div id="demo1"
+			style="position: relative; top: 50px; width: 100%; text-align: center;"></div>
+		<hr
+			style='width: 1140px; border: none; height: 1px; background-color: LightGrey; position: relative; left: 27px; top: 40px;' />
+		<span
+			style='font-size: 20px; position: relative; top: 50px; width: 100%; text-align: center;' id="spanns">添加评论</span>
+		<div style='width: 1200px; position: relative; top: 40px;'>
+			<form id='Comments' class='code'>
+				<input class='Input-long' id="commentator" type='text' placeholder='(*必填)怎么称呼你' /><br />
+				<input class='Input-long' id="email" type="email" placeholder='(*必填)你的联系邮箱' />
+				<input class='Input-long' id="website_url" type='text' placeholder='你的网站地址(选填)' />
+				<input type='text' value='' placeholder='请输入验证码（不区分大小写）' class='input-val'>
+				<canvas id='canvas' width='100' height='30'></canvas>
+				<br /> <span>&nbsp;</span>
+				<textarea id="comment_body"
+					style='font-size: 9pt; font-family: verdana; color: #333333; width: 100%; height: 100px;'
+					placeholder='(必填)请输入内容'></textarea>
+				<center>
+					<button type="button" id="submit"
+						class="layui-btn layui-btn-normal" style="margin: 30px 0px;">提交</button>
+				</center>
+			</form>
+		</div>
+		<div class="footer"
+			style="width: 1920px; position: relative; left: -400px;">
+			© <span id="footerAbout"></span> <span id="footerCopyRight"></span><br />
+			<span id="footerICP"></span> <span>♥ Theme Amaze by spiritree
+				& Jiahao.Zhang</span>
+		</div>
+	</div>
+</body>
+<script src="../layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript">
+	layui.use([ 'jquery' , 'laypage' , 'layer' ], function() {
+		var $=layui.jquery;
+		var layer=layui.layer;
+		var laypage = layui.laypage;
+		var blog_id = decodeURI(RequestParameter()["blog_id"]);
+		function RequestParameter() {
+
+			var url = window.location.search;
+
+			var theRequest = new Object();
+
+			if (url.indexOf("?" != -1)) {
+				var str = url.substr(1);
+				var strs = str.split("&");
+				for (var i = 0; i < strs.length; i++) {
+					theRequest[strs[i].split("=")[0]] = (strs[i]
+							.split("=")[1]);
+				}
+			}
+			return theRequest;
+
+		}
+		
+		$.ajax({
+			url : '/config/list',
+			success : function(res) {
+				for (var i = 0; i < res.data.length; i++) {
+					$.ajax({
+						url : '/config/findByConfigName',
+						data : {
+							config_name : res.data[i].config_name
+						},
+						success : function(res) {
+							$('#' + res.data.config_name + '').html(
+									res.data.config_value)
+						}
+					})
+				}
+			}
+		})
+		
+		var blog_id = decodeURI(RequestParameter()["blog_id"]);
+		
+		$.ajax({
+			url:"/blog_comment/countByBlogId",
+			data:{
+				blog_id:blog_id
+			},
+			success:function(res){
+				var config_names=["yourName","yourAvatar"]
+				comment_count=res.data;
+				//总页数大于页码总数
+				  laypage.render({
+				    elem: 'demo1'
+				    ,count:comment_count  //数据总数
+				    ,limit: 4
+				    ,jump: function(obj){
+				        $.ajax({
+							url:"/blog_comment/findByBlogId",
+							data:{
+								blog_id:blog_id,
+								page:obj.curr,
+								limit:obj.limit
+							},
+							success:function(res){
+								if(res.list.length>0){
+									var str="";
+									for(var i=0;i<res.list.length;i++){
+										str+="<div id='bottomB' style='margin-top: 30px;'>"
+										str+="<h1 style='font-weight:bold;'>"+res.list[i].commentator+"</h1>"
+										str+="<img src='../img/mc.jpg' style='width:100px;height:100px;margin-top:20px;'>"
+										str+="<span class='span1'>评论时间:"+res.list[i].comment_create_time+"</span>"
+										str+="<span class='span2'>"+res.list[i].comment_body+"</span>"
+										if(res.list[i].length != 0){
+											if(res.list[i].reply_body != ""){
+												str+="<span class='span3'>回复内容："+res.list[i].reply_body+"</span>"
+												str+="<span class='span3'>回复时间："+res.list[i].reply_create_time+"</span>"
+											}
+										}
+										str+="<hr/>"
+										str+="</div>"
+									}
+								}else{
+									str="";
+									str+="<div style=width:600px; height:100px; margin:0 auto; text-align:center;><p style=color:gray; font-size:30px>暂无评论</p></div>"
+								}
+								$("#bottomA").html(str)
+							}
+						})
+				    }
+				  });
+			}
+		})
+		
+		$.ajax({
+			url : "/blog/findById",
+			data : {
+				blog_id : blog_id
+			},
+			success:function(res){
+				$('#blog_title').html(res.data[0].blog_title);
+				$('#create_time').html(res.data[0].create_time);
+				$('#blog_views').html(res.data[0].blog_views+"浏览");
+				var str = res.data[0].blog_tags;
+				var arr = [];
+				arr = str .split(",");
+				for(var i = 0 ; i < arr.length ; i++){
+					$('#tags').append("<div class='divv3 div_tags' style='font-size:14px;'><a href=\"#\" style='text-decoration:none;color:white'>"+arr[i]+"</a></div>")
+				}
+				
+				var str="";
+				var strr=res.data[0].blog_content;
+				var strs=strr.split("- ");
+				String.prototype.httpHtml = function(){
+					var reg = /(http:\/\/|https:\/\/)((\w|=|\?|\.|\/|&|-)+)/g;
+					return this.replace(reg, '<a href="$1$2" style="color:blue" onmouseover="this.style.color=\'red\'" onmouseout="this.style.color=\'blue\'">$1$2</a>');
+				}
+				for(var i=0;i<strs.length;i++){
+					str+="<div><span style=\"position:relative;top:5px;\">"+strs[i].httpHtml()+"</span></div>";
+				}
+				$("#blog_show").html(str);
+			}
+		})
+		
+		$.ajax({
+			url : '/blog/comment',
+			data : {
+				blog_id : blog_id
+			},
+			success:function(res){
+				$('#comment').html(res.data.length+"评论");
+			}
+		})
+		
+		
+		$.ajax({
+			url : '/blog/list_enable_comment',
+			data :　{
+				blog_id:blog_id
+			},
+			success:function(res){
+				if(res.data.length == 0){
+					$('#spanns').remove();
+					$('#commentator').remove();
+					$('#email').remove();
+					$('#website_url').remove();
+					$('#canvas').remove();
+					$('.input-val').remove();
+					$('#comment_body').remove();
+					$('#submit').remove();
+					$('.footer').attr('style','margin-top:206px;width: 1920px; position: relative; left: -400px;');
+				}
+			}
+		})
+		
+		var show_num = [];
+		draw(show_num);
+		
+		$("#submit").on('click',function(){
+				var commentator=$("#commentator").val();
+				var email=$("#email").val();
+				var website_url=$("#website_url").val();
+				var comment_body=$("#comment_body").val();
+				
+				if(commentator==""||commentator==null){
+					layer.msg("名称不能为空")
+					return;
+				}
+				if(email==""||email==null){
+					layer.msg("邮箱不能为空");
+					return;
+				}else{
+					if(email.indexOf("@qq.com") == -1){
+						layer.msg("邮箱格式不正确！！！");
+						return;
+					}
+				}
+				if(comment_body==""||comment_body==null){
+					layer.msg("内容不能为空")
+					return;
+				}
+				var val = $(".input-val").val().toLowerCase();
+				var num = show_num.join("");
+				if (val == '') {
+					layer.msg("请输入验证码！");
+					return false;
+				} else if (val == num) {
+					layer.msg('评论成功！');
+					$(".input-val").val('');
+					$.ajax({
+						url:"/blog_comment/add",
+						data:{
+							blog_id:blog_id,
+							commentator:commentator,
+							email:email,
+							website_url:website_url,
+							comment_body:comment_body,
+						},
+						success:function(res){
+							if(res.data>0){
+								layer.msg("评论成功");
+								window.setInterval(function(){
+									location.href=location;
+								},2000)
+							}else{
+								layer.alert("评论失败！！！")
+							}
+						}
+					})
+				} else {
+					layer.msg('验证码错误！请重新输入！');
+					$(".input-val").val('');
+					return false;
+				}
+			})
+		
+		window.setTimeout(function(){
+		$(function() {
+				$("#canvas").on('click', function() {
+					draw(show_num);
+				})
+			})
+		},100)
+		
+		function draw(show_num) {
+	        var canvas_width=$('#canvas').width();
+	        var canvas_height=$('#canvas').height();
+	        var canvas = document.getElementById("canvas");//获取到canvas的对象，演员
+	        var context = canvas.getContext("2d");//获取到canvas画图的环境，演员表演的舞台
+	        canvas.width = canvas_width;
+	        canvas.height = canvas_height;
+	        var sCode = "A,B,C,E,F,G,H,J,K,L,M,N,P,Q,R,S,T,W,X,Y,Z,1,2,3,4,5,6,7,8,9,0";
+	        var aCode = sCode.split(",");
+	        var aLength = aCode.length;//获取到数组的长度
+	        
+	        for (var i = 0; i <= 3; i++) {
+	            var j = Math.floor(Math.random() * aLength);//获取到随机的索引值
+	            var deg = Math.random() * 30 * Math.PI / 180;//产生0~30之间的随机弧度
+	            var txt = aCode[j];//得到随机的一个内容
+	            show_num[i] = txt.toLowerCase();
+	            var x = 10 + i * 20;//文字在canvas上的x坐标
+	            var y = 20 + Math.random() * 8;//文字在canvas上的y坐标
+	            context.font = "bold 23px 微软雅黑";
+	 
+	            context.translate(x, y);
+	            context.rotate(deg);
+	 
+	            context.fillStyle = randomColor();
+	            context.fillText(txt, 0, 0);
+	 
+	            context.rotate(-deg);
+	            context.translate(-x, -y);
+	        }
+	        for (var i = 0; i <= 5; i++) { //验证码上显示线条
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            context.moveTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.lineTo(Math.random() * canvas_width, Math.random() * canvas_height);
+	            context.stroke();
+	        }
+	        for (var i = 0; i <= 30; i++) { //验证码上显示小点
+	            context.strokeStyle = randomColor();
+	            context.beginPath();
+	            var x = Math.random() * canvas_width;
+	            var y = Math.random() * canvas_height;
+	            context.moveTo(x, y);
+	            context.lineTo(x + 1, y + 1);
+	            context.stroke();
+	        }
+	    }
+	 
+	    function randomColor() {//得到随机的颜色值
+	        var r = Math.floor(Math.random() * 256);
+	        var g = Math.floor(Math.random() * 256);
+	        var b = Math.floor(Math.random() * 256);
+	        return "rgb(" + r + "," + g + "," + b + ")";
+	    }
+	})
+</script>
+</html>

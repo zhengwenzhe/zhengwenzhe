@@ -1,0 +1,41 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.lg_title{
+    width: 360px;
+    height: 80px;
+    margin: 0 auto;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 200px;
+    
+}
+.lg_title p{
+    color: #0A80fE;
+    font-size: 40px;
+    line-height: 80px;
+    font-weight: 500;
+}
+.container{
+    width: 360px;
+    height: 340px;
+    border: 1px;
+    border-radius: 3px;
+    background-color:rgba(255,255,255,0.3);
+    box-shadow: 0 0 2px rgb(90, 88, 86);
+    margin: 0 auto;
+}
+.header{
+    height: 50px;
+    width: 360px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+.header p{
+    color: white;
+    line-height: 50px;
+}
+.container input{
+	margin-left: 10px;
+}

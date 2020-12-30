@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="css/home_page.css">
+<link rel="stylesheet"
+	href="../../font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+<body style="background: rgb(244, 246, 249)">
+	<div class="home_page">
+		<p>管理首页</p>
+	</div>
+	<div class="horizontal_line">
+		<hr width="1645px">
+	</div>
+	<div class="container_model">
+		<div class="add_blog">
+			<div class="add_blog_left">
+				<p class="add_blog_left_title">新增博客</p>
+				<p class="add_blog_left_paragraph">记心中所想</p>
+			</div>
+			<div class="add_blog_right">
+				<p class="fa fa-pencil-square-o"></p>
+			</div>
+			<div class="add_blog_bottom">
+				<a href="#" id="issue_blog">let’s go&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="article_sum">
+			<div class="article_sum_left">
+				<p class="article_sum_left_title" id="blog_count">0</p>
+				<p class="article_sum_left_paragraph">总文章数</p>
+			</div>
+			<div class="article_sum_right">
+				<p class="fa fa-list-alt"></p>
+			</div>
+			<div class="article_sum_bottom">
+				<a href="#" id="blog_manager">More info&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="get_comment">
+			<div class="get_comment_left">
+				<p class="get_comment_left_title" id="comment_count">0</p>
+				<p class="get_comment_left_paragraph">收到评论数</p>
+			</div>
+			<div class="get_comment_right">
+				<p class="fa layui-icon layui-icon-reply-fill"></p>
+			</div>
+			<div class="get_comment_bottom">
+				<a href="#" id="comment_manager">More info&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="classify_count">
+			<div class="classify_count_left">
+				<p class="classify_count_left_title" id="class_count">0</p>
+				<p class="classify_count_left_paragraph">分类数量</p>
+			</div>
+			<div class="classify_count_right">
+				<p class="fa fa-th-large"></p>
+			</div>
+			<div class="classify_count_bottom">
+				<a href="#" id="classify_manager">More info&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="label_sum">
+			<div class="label_sum_left">
+				<p class="label_sum_left_title" id="label_count">0</p>
+				<p class="label_sum_left_paragraph">标签总量</p>
+			</div>
+			<div class="label_sum_right">
+				<p class="fa fa-tags"></p>
+			</div>
+			<div class="label_sum_bottom">
+				<a href="#" id="label_manager">More info&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="link">
+			<div class="link_left">
+				<p class="link_left_title" id="link_count">0</p>
+				<p class="link_left_paragraph">友情链接</p>
+			</div>
+			<div class="link_right">
+				<p class="fa layui-icon layui-icon-heart-fill"></p>
+			</div>
+			<div class="link_bottom">
+				<a href="#" id="link">More info&nbsp;
+					<p class="fa fa-arrow-circle-right"></p>
+				</a>
+			</div>
+		</div>
+		<div class="containee">
+			<div id="demo1" style="height: 380px; position: relative;top:400px;" ></div>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../layui/layui.js"></script>
+	<script type="text/javascript" src="../../js/echarts.min.js"></script>
+	<script type="text/javascript">
+		layui.use([ 'jquery' ], function() {
+			var $ = layui.jquery;
+			
+			$.ajax({
+				url:"/blog/getBlogCountGroup",
+				success:function(res){
+					// 基于准备好的dom，初始化echarts实例
+					var mychar=echarts.init(document.getElementById('demo1'));
+
+				    // 指定图表的配置项和数据
+					var option={
+							title:{
+								text:" 访问量前五的博客"
+							},
+						  	tooltip:{},
+						 	legend:{},
+					        xAxis: {
+				            },
+				            yAxis: {
+					        	type: 'category',
+					        	data:[
+					        		res.data[0].blog_title,
+					        		res.data[1].blog_title,
+					        		res.data[2].blog_title,
+					        		res.data[3].blog_title,
+					        		res.data[4].blog_title
+					        	]
+				            },
+				            dataset: {
+				                // 这里指定了维度名的顺序，从而可以利用默认的维度到坐标轴的映射。
+				                // 如果不指定 dimensions，也可以通过指定 series.encode 完成映射，参见后文。
+				                dimensions: ['blog_title', 'blog_views'],
+				                source:res.data
+				            },
+				            series: [{
+				                type: 'bar',
+				            }]
+					};
+			        // 使用刚指定的配置项和数据显示图表。
+			        mychar.setOption(option);
+				}
+			})
+			
+			$.ajax({
+				url : "/blog/count",
+				success : function(res) {
+					if (res.data > 0) {
+						$("#blog_count").html(res.data)
+					}
+				}
+			});
+			
+			$.ajax({
+				url : "/blog_comment/count",
+				success : function(res) {
+					if (res.data > 0) {
+						$("#comment_count").html(res.data)
+					}
+				}
+			});
+			
+			$.ajax({
+				url : "/blog_category/count",
+				success : function(res) {
+					if (res.data > 0) {
+						$("#class_count").html(res.data)
+					}
+				}
+			});
+			
+			$.ajax({
+				url : "/blog_tag/count",
+				success : function(res) {
+					if (res.data > 0) {
+						$("#label_count").html(res.data)
+					}
+				}
+			});
+			
+			$.ajax({
+				url : "/link/count",
+				success : function(res) {
+					if (res.data > 0) {
+						$("#link_count").html(res.data)
+					}
+				}
+			});
+			
+			$('#issue_blog').on('click',function(){
+				var param = {'code':'3'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="issue_blog.html";
+			})
+			
+			$('#blog_manager').on('click',function(){
+				var param = {'code':'4'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="blog_manager.html";
+			})
+			
+			$('#comment_manager').on('click',function(){
+				var param = {'code':'5'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="comment_manager.html";
+			})
+			
+			$('#classify_manager').on('click',function(){
+				var param = {'code':'6'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="classify_manager.html";
+			})
+			
+			$('#label_manager').on('click',function(){
+				var param = {'code':'7'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="label_manager.html";
+			})
+			
+			$('#link').on('click',function(){
+				var param = {'code':'8'};
+		        window.parent.postMessage(param,'*');
+				$(this).attr('target','fy_iframe');
+				location.href="link.html";
+			})
+			
+		});
+	</script>
+</body>
+</html>

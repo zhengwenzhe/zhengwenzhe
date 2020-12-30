@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fy.dao.Admin_User_Mapper">
+
+	<select id="login" parameterType="String" resultType="admin_User">
+		select * from tb_admin_user where login_user_name=#{login_user_name} and login_password=#{login_password}
+	</select>
+	
+	<update id="edit" parameterType="admin_User">
+		update tb_admin_user set login_user_name=#{login_user_name},
+		nick_name=#{nick_name},locked=#{locked}
+		where admin_user_id=#{admin_user_id}
+	</update>
+	
+	<select id="findUserById" parameterType="int" resultType="admin_User">
+		select * from tb_admin_user where admin_user_id=#{admin_user_id}
+	</select>
+	
+	<select id="list_admin_user" parameterType="list" resultType="admin_User">
+		select * from tb_admin_user where login_user_name=#{login_user_name} and login_password=#{login_password}
+	</select>
+	
+	<update id="edit_admin_user" parameterType="admin_User">
+		update tb_admin_user set login_password=#{login_password} where admin_user_id=#{admin_user_id}
+	</update>
+	
+</mapper>

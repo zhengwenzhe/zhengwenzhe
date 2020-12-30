@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+ 
+body {
+  font-family: Arial;
+}
+h2{
+	padding: 20px 0px 20px 0px;
+	font-weight: normal;
+}
+#header-font{
+	color: white;
+	float: left;
+	margin-top:-50px;
+}
+
+/* 鍒涘缓涓変釜鐩哥瓑鐨勫垪 */
+.column {
+	float: left;
+	padding: 10px;
+}
+
+.column.side {
+	width: 25%;
+}
+.column.middle {
+	width: 50%;
+}
+ul{
+	padding-left: 40px;
+}
+li{
+	margin: 7px 0px 7px 0px;
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  .column.side, .column.middle {
+    width: 100%;
+  }
+}
+
+/* 搴曢儴鏍峰紡 */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: rgb(221,221,221);
+  margin-top: 20px;
+  line-height: 25px;
+}
+.row a{
+	text-decoration: none;
+	color:rgb(0,120,215);
+}
+.row a:hover{
+	color:red;
+}

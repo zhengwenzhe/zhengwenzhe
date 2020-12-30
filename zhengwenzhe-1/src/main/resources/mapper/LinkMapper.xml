@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fy.dao.LinkMapper">
+
+	<select id="list"  resultType="link">
+		select * from tb_link
+		<where>
+			is_deleted != 1;
+		</where>
+	</select>
+	
+	<update id="up" parameterType="int">
+			update tb_link
+			set
+			is_deleted= 1 
+			<where>
+				link_id in
+				<foreach collection="array" item="ids" open="(" close=")" separator=",">
+					 #{ids}
+				</foreach>
+			</where>
+	</update>
+	
+	<select id="count" resultType="int">
+		select count(*) from tb_link where is_deleted !=1
+	</select>
+	
+	<select id="findById" parameterType="int" resultType="link">
+		select * from tb_link where link_id=#{link_id}
+	</select>
+	
+	<insert id="insert" parameterType="link">
+	    insert into tb_link(link_type,link_name,link_url,link_description) values(#{link_type},#{link_name},#{link_url},#{link_description});
+	</insert>
+	
+	<update id="update" parameterType="link">
+		update tb_link set link_type=#{link_type},link_description=#{link_description} where link_id=#{link_id}
+	</update>
+	
+</mapper>

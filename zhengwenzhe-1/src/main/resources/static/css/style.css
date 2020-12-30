@@ -1,0 +1,48 @@
+.ma{
+	margin: 35px;
+}
+#back{
+	display:inline-block;
+	padding: 20px;
+	background-color: rgba(255,255,255,0.2);
+}
+#posi{
+	position: absolute;
+}
+#ma{
+	width:252px;
+	margin-left: 31px;
+}
+#d1{
+	text-align: center;
+}
+#sp1{
+	display:block;
+	width:332px;
+	height:60px;
+	line-height:60px;
+	font-size: 30px;
+	color:rgb(57,152,254);
+}
+#sp2{
+	display:block;
+	height: 30px;
+	color:rgb(136,138,140);
+}
+.img{
+	background-color:rgb(108,108,108);
+	font-size: 30px;
+	line-height: 38px;
+}
+#ma1{
+	width:140px;
+	margin-left: 31px;
+}
+.btn{
+	width:292px;
+	background-color:rgb(0,123,255);
+}
+.canvas{
+	width:100px;
+	height:38px;
+}

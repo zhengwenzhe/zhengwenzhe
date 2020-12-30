@@ -1,0 +1,339 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.home_page{
+    height: 70px;
+    text-align: left;
+}
+.home_page p{
+    line-height: 110px;
+    font-size: 18px;
+    margin-left: 36px;
+}
+.horizontal_line hr{
+    margin-left: 20px;
+}
+.container_model{
+    width: 1685px;
+    margin-top: 30px;
+}
+.add_blog{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #17a2b8;
+    border-radius: 5px;
+    float: left;
+}
+.add_blog_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.add_blog_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.add_blog_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.add_blog_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.add_blog_right p{
+    color: #434747;
+    font-size: 100px;
+    margin-right: 20px;
+    margin-top: 16px;
+    opacity: 0.4;
+}
+.add_blog_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.add_blog_bottom a{
+    line-height: 30px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.add_blog_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+.article_sum{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #28a745;
+    border-radius: 5px;
+    float: left;
+}
+.article_sum_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.article_sum_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.article_sum_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.article_sum_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.article_sum_right p{
+    color: #434747;
+    opacity: 0.4;
+    margin-right: 20px;
+    margin-top: 16px;
+    font-size: 100px;
+}
+.article_sum_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.article_sum_bottom a{
+    line-height: 30px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.article_sum_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+.get_comment{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #0078ff;
+    border-radius: 5px;
+    float: left;
+}
+.get_comment_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.get_comment_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.get_comment_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.get_comment_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.get_comment_right p{
+    opacity: 0.4;
+    color: #434747;
+    margin-right: 20px;
+    margin-top: 16px;
+    font-size: 100px;
+}
+.get_comment_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.get_comment_bottom a{
+    line-height: 30px;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+.get_comment_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+.label_sum{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #dc3545;
+    border-radius: 5px;
+    float: left;
+}
+.label_sum_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.label_sum_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.label_sum_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.label_sum_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.label_sum_right p{
+    opacity: 0.4;
+    color: #434747;
+    margin-right: 20px;
+    margin-top: 16px;
+    font-size: 100px;
+}
+.label_sum_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.label_sum_bottom a{
+    line-height: 30px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.label_sum_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+.classify_count{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #ffc107;
+    border-radius: 5px;
+    float: left;
+}
+.classify_count_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.classify_count_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.classify_count_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.classify_count_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.classify_count_right p{
+    opacity: 0.4;
+    color: #434747;
+    margin-right: 20px;
+    margin-top: 16px;
+    font-size: 100px;
+}
+.classify_count_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.classify_count_bottom a{
+    line-height: 30px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.classify_count_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+.link{
+    width: 521px;
+    height: 135px;
+    margin: 20px;
+    background: #343a40;
+    border-radius: 5px;
+    float: left;
+}
+.link_left{
+    width: 260px;
+    height: 105px;
+    text-align: left;
+    float: left;
+}
+.link_left_title{
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 500;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.link_left_paragraph{
+    color: #FFFFFF;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.link_right{
+    float: left;
+    width: 261px;
+    height: 105px;
+    text-align: right;
+}
+.link_right p{
+    opacity: 0.4;
+    color: #434747;
+    margin-right: 20px;
+    margin-top: 16px;
+    font-size: 100px;
+}
+.link_bottom{
+    width: 521px;
+    height: 30px;
+    text-align: center;
+}
+.link_bottom a{
+    line-height: 30px;
+    color: #FFFFFF;
+    text-decoration: none;
+}
+.link_bottom p{
+    line-height: 30px;
+    color: #FFFFFF;
+}
+

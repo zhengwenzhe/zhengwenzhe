@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fy.dao.BlogConfigMapper">
+  <select id="list" resultType="blogconfig">
+		select * from tb_config
+	</select>
+	<select id="findByConfigName" resultType="blogconfig" parameterType="String">
+		select * from tb_config where config_name=#{config_name}
+	</select>
+	<update id="edit" parameterType="blogconfig">
+		update tb_config set config_value=#{config_value},update_time=#{update_time} where config_name=#{config_name}
+	</update>
+	<select id="findByConfigNames" parameterType="String" resultType="blogconfig">
+		select * from tb_config where config_name
+		in
+		<foreach collection="array" item="name" open="(" separator="," close=")">
+			#{name}
+		</foreach>
+	</select>
+</mapper>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<title>修改分类</title>
+<style type="text/css">
+.title {
+	width: 400px;
+	height: 50px;
+	margin: 0 auto;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.title p {
+	font-size: 20px;
+	color: gray;
+	line-height: 50px;
+}
+
+.rule {
+	width: 420px;
+	margin: 0 auto;
+}
+.layui-upload-img {
+    width: 100px;
+    height: 100px;
+    object-fit:cover;
+}
+</style>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script src="../../js/jquery.min.js"></script>
+<script type="text/javascript">
+	layui.use([ "jquery", "form","upload","layer"], function() {
+		var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+		
+		var $ = layui.jquery;
+		var form = layui.form;
+		var upload=layui.upload;
+		var layer=layui.layer;
+		var obj=location.href;
+		var category_id=obj.substring(obj.indexOf('=')+1,obj.length)
+		$("#demo1").on('click',function(){
+			//iframe层-父子操作
+			layer.open({
+				type : 2,
+				area : [ '500px', '400px' ],
+				fixed : true, //不固定
+				maxmin : true,
+				content : '../icon/icon.html'
+			});
+		})
+		
+		$.ajax({
+			url:"/blog_category/findById",
+			data:{
+					id:category_id
+				},
+			success:function(res){
+				console.log(res)
+				 $("#category_id").val(res.category_id)
+				 $("#demo1").attr('src', '../../'+res.category_icon);
+				 $("#category_name").val(res.category_name)
+			}
+		})
+		
+		$("#submit").on('click',function(){
+			var category_name=$("#category_name").val()
+			var img=$("#demo1").prop("src");
+			img=img.substring(img.lastIndexOf("/") + 1, img.length)
+			
+			if(category_name == "" || category_name==null){
+				layer.msg("分类名称不能为空")
+				return;
+			}
+			if(img == "" || img==null){
+				layer.msg("请选择分类图标!!!")
+				return;
+			}
+			$.ajax({
+				url:"/blog_category/update",
+				data:{
+					category_id:$("#category_id").val(),
+					category_name:$("#category_name").val(),
+					category_icon:"/img/category/"+img
+				},
+				success:function(res){
+					if(res>0){
+						layer.alert('修改成功',function(){
+							 parent.layer.close();
+							 parent.location.href=parent.location;
+						})
+					}else{
+						layer.alert('修改失败',function(){
+							 parent.layer.close(index);
+						})
+					}
+				}
+			})
+		})
+	})
+</script>
+</head>
+<body>
+	<div class="title">
+		<p>修改分类</p>
+	</div>
+	<div class="rule">
+		<hr />
+	</div>
+	 <div class="layui-layout-admin">
+		<div class=" layui-main" style="margin: 20px 30px 0px 0px;">
+			<form class="layui-form" lay-filter="example">
+				<input type="hidden" id="category_id">
+				<div class="layui-form-item" style="width: 400px; margin: 0 auto;">
+					<label class="layui-form-label">分类名称</label>
+					<div class="layui-input-block">
+						<input type="text" name="category_name" id="category_name"
+							autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item" style="width: 400px; margin: 0 auto;">
+					<label class="layui-form-label">分类图标</label>
+					<input type="hidden" name="file_id" id="file_id"/>
+				    <div class="layui-input-block">	
+				      	<div class="layui-upload">
+						  <div class="layui-upload-list">
+						    <img class="layui-upload-img" id="demo1">
+						  </div>
+						</div>
+				    </div>
+				</div>
+				<div class="layui-form-item" style="width: 400px; margin: 0 auto;">
+					<div class="layui-input-block" style="text-align: center;position: relative;top: 50px;left: -40px;">
+						<button type="button" class="layui-btn" id="submit">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

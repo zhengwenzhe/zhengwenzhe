@@ -1,0 +1,25 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+/*
+.container{
+    display: inline-block;
+    position:fixed;
+    height: 918px;
+    width: 1685px;
+    left: 235px;
+    background: #F4f6f9;
+}*/
+.container_bodyer{
+    width: 1655px;
+    height: 100%;
+    background: darkgray;
+}
+#blog_title{
+    width: 822px;
+    margin-right: 11px;
+}
+#blog_tags{
+    width: 822px;
+}

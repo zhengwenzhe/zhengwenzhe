@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../../layui/css/layui.css">
+<title>选择图标</title>
+<style type="text/css">
+	.container img{
+		width: 64px;
+		height: 64px;
+		margin: 7px;
+	}
+</style>
+<script type="text/javascript" src="../../../layui/layui.js"></script>
+<script src="../../../js/jquery.min.js"></script>
+<script type="text/javascript">
+layui.use([ "jquery", "form","layer"], function() {
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+	var $ = layui.jquery;
+	var form = layui.form;
+	var layer=layui.layer;
+		
+	$.ajax({
+		url:"/blog_category/getImage",
+		success:function(res){
+			for(var i=0;i<res.data.length;i++){
+				$(".container").append("<div class=layui-col-md4 style=display:inline-block;margin-right:4px;object-fit:cover;><img src=../../../img/category/"+ res.data[i]+" class=icon></div>")
+			}
+			$(".icon").on('click',function(){
+				 var img=$(this).prop("src")
+				 img=img.substring(img.lastIndexOf("/") + 1, img.length)
+				 parent.$("#demo1").attr('src', "../../../img/category/"+img);
+				 parent.layer.close(index);
+			})
+		}
+	})
+})	
+</script>
+</head>
+<body>
+	<div class="container layui-row layui-col-space10" style="width: 470px;margin: 0 auto;">
+		<!-- <img alt="" onclick="pitch()" src="../../images/admin_head/01_fuko.jpg">  -->
+	</div>
+</body>
+</html>
